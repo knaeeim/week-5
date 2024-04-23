@@ -16,53 +16,62 @@ using namespace std;
 #define All(X) (X).begin(),(X).end()
 #define Unique(X) (X).erase(unique((X).begin(),(X).end()),(X).end())
 #define range(arr) for(auto el: arr) cout<<el<<" ";
-
-// class cmp{
-//     public: 
-//     bool operator()(pair<int, int> a, pair<int, int> b){
-//         return a.second > b.second;
-//     } 
-// };
-
-
+ 
+bool cmp(pair<int, int> a, pair<int, int> b){
+    return a.second < b.second;
+}
+ 
 int main()
 {
     ios::sync_with_stdio(false); 
     cin.tie(NULL); 
-
+ 
     int t; cin>>t; 
-
+ 
     while(t--){
         string s; cin>>s; 
         
-        priority_queue<pair<int, int>> pq; 
-
-        for(int i=0; i<s.size(); i++){
-            pq.push({(s[i] - 96), i+1});
+        vector <pair<char, int>> v; 
+        
+        char first_final = min(s[0], s[s.size()-1]);
+        char last_final = max(s[0], s[s.size()-1]); 
+        
+        for(int i = 0; i<s.size(); i++){
+            if(s[i] >= first_final and s[i] <= last_final){
+                v.push_back({s[i], i+1}); 
+            }
         }
-
+        
+        sort(v.begin(), v.end(), [&] (pair<char, int> a, pair<char, int> b){
+            return a.second < b.second; 
+        });
+        
+        if(s.size() > 2){
+            sort(v.begin()+1, v.begin()+v.size()-1, [&](pair<char, int>a, pair<char, int>b){
+                if(s[0] > s[s.size()-1]){
+                    return a.first > b.first;
+                }else{
+                    return a.first < b.first;
+                }
+            });
+        }
+        
         int cost = 0; 
         vector <int> ans; 
         
-        if(!pq.empty()){
-            int first = pq.top().first; 
-            ans.push_back(pq.top().second); 
-            pq.pop();
-
-            while(!pq.empty()){
-                int current = pq.top().first;
-                cost += (first - current);
-                first = current;
-                ans.push_back(pq.top().second);
-                pq.pop();
-            }
+        ans.push_back(1); 
+        
+        for(int i=1; i<v.size(); i++){
+            cost += abs(v[i-1].first - v[i].first); 
+            ans.push_back(v[i].second);
         }
-
-        cout<<abs(cost)<<" ";
-        cout<<ans.size()<<endl;
-        range(ans);
-        cout<<endl; 
-
+        
+        cout<<cost<<" "<<ans.size()<<endl;
+        for(auto el: ans){
+            cout<<el<<" ";
+        }
+        cout<<endl;
+ 
     }
     return 0; 
 }

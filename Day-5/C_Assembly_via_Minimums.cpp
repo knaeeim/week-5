@@ -17,17 +17,6 @@ using namespace std;
 #define Unique(X) (X).erase(unique((X).begin(),(X).end()),(X).end())
 #define range(arr) for(auto el: arr) cout<<el<<" ";
 
-string decimalToBinary(int x){
-    string ans; 
-
-    for(int i = 64; i>=0; i--){
-        int k = x >> i; 
-        if(k & 1) ans +='1';
-        else ans +='0';
-    }
-    return ans; 
-}
-
 
 int main()
 {
@@ -39,36 +28,30 @@ int main()
 
     while(t--){
         int n; cin>>n; 
+        int m = (n * (n-1))/2; 
+        vi a(n), b(m); 
 
-        vi v(n); 
-
-        for(int i=0; i<n; i++){
-            cin>>v[i]; 
+        for(int i=0; i<m; i++){
+            cin>>b[i]; 
         }
 
-        vi m(64);
+        sorta(b);
 
-        for(int i = 0; i< n; i++){
-            string s = decimalToBinary(v[i]);
+        int x = 1; 
+        int indx = 0; 
+        int condition = n - x; 
 
-            for(int j = 0; j < 64; j++){
-                if(s[j] == '1'){
-                    m[j]++;
-                }
-            }
+        while(n - x > 0){
+            a[indx++] = b[condition - 1];
+            x++;
+            condition += n - x;
         }
 
-        int g = 0;
+        a[n-1] = 100000000; 
 
-        for(int i=0; i<64; i++){
-            g = __gcd(g, m[i]);
-        }
-
-        for(int i=1; i<=n; i++){
-            cout<<g<<" "<<i<<" ->"<<g%i<<endl;
-            // if(g % i == 0) cout<<i<<" ";
-        }
+        range(a);  
         cout<<endl;
+
     }
     return 0; 
 }
