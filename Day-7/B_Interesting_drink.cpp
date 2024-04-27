@@ -24,33 +24,34 @@ int main()
     cin.tie(NULL); 
     
 
-    int n, q; 
-    cin>>n>>q; 
+    int n; cin>>n; 
 
-    vi v(n), qArray(q); 
+    vi v(n); 
 
-    for(int i=0; i<n; i++){
-        cin>>v[i];
-    }
+    for(int i=0; i<n; i++) cin>>v[i]; 
 
-    for(int i=0; i<q; i++){
-        cin>>qArray[i];
-    }
+    sorta(v);
 
-    for(int i = 0; i < q; i++){
+    int q; cin>>q; 
+
+    while(q--){
+        int query; 
+        cin>> query; 
+
         int left = 0, right = n - 1; 
         int ans = n; 
-        while(left <= right){
-            int mid = (left + right) / 2; 
 
-            if(v[mid] >= qArray[i]){
+        while(left <= right){
+            int mid = (left+right) / 2; 
+
+            if(v[mid] > query){
                 ans = mid; 
                 right = mid - 1; 
             }
             else left = mid + 1;
         }
 
-        cout<<ans + 1<<endl; 
+        cout<<ans<<endl;
     }
     return 0; 
 }
